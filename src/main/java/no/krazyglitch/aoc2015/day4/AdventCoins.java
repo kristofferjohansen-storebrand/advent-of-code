@@ -7,7 +7,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+
+import static no.krazyglitch.util.DateUtils.getMillisSince;
 
 public class AdventCoins {
 
@@ -26,11 +27,11 @@ public class AdventCoins {
         final String data = "iwrupvqb";
         LocalDateTime start = LocalDateTime.now();
         System.out.printf("The lowest salt resulting in 5 leading zeros is %d\n", findLowestSalt(data, 5));
-        System.out.printf("Part one took %d ms\n\n", ChronoUnit.MILLIS.between(start, LocalDateTime.now()));
+        System.out.printf("Part one took %d ms\n\n", getMillisSince(start));
 
         start = LocalDateTime.now();
         System.out.printf("The lowest salt resulting in 6 leading zeros is %d\n", findLowestSalt(data, 6));
-        System.out.printf("Part two took %d ms\n\n", ChronoUnit.MILLIS.between(start, LocalDateTime.now()));
+        System.out.printf("Part two took %d ms\n\n", getMillisSince(start));
     }
 
     public static int findLowestSalt(final String secret, final int leadingZeros) {

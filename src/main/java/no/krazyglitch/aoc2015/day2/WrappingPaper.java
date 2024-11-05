@@ -3,9 +3,10 @@ package no.krazyglitch.aoc2015.day2;
 import no.krazyglitch.util.FileUtil;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
+
+import static no.krazyglitch.util.DateUtils.getMillisSince;
 
 public class WrappingPaper {
 
@@ -14,11 +15,11 @@ public class WrappingPaper {
             final List<String> data = FileUtil.readInputFile(this.getClass());
             LocalDateTime start = LocalDateTime.now();
             System.out.printf("The elves need to order %d square feet of wrapping paper\n", wrapPresents(data));
-            System.out.printf("Part one took %d ms\n\n", ChronoUnit.MILLIS.between(start, LocalDateTime.now()));
+            System.out.printf("Part one took %d ms\n\n", getMillisSince(start));
 
             start = LocalDateTime.now();
             System.out.printf("The elves need to order %d feet of ribbon\n", tiePresents(data));
-            System.out.printf("Part two took %d ms", ChronoUnit.MILLIS.between(start, LocalDateTime.now()));
+            System.out.printf("Part two took %d ms", getMillisSince(start));
         } catch (final Exception exc) {
             exc.printStackTrace();
         }

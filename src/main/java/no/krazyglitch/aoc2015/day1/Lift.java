@@ -1,9 +1,11 @@
 package no.krazyglitch.aoc2015.day1;
 
+import no.krazyglitch.util.DateUtils;
 import no.krazyglitch.util.FileUtil;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+
+import static no.krazyglitch.util.DateUtils.getMillisSince;
 
 public class Lift {
 
@@ -12,11 +14,11 @@ public class Lift {
             final String data = FileUtil.readInputFile(this.getClass()).getFirst();
             LocalDateTime start = LocalDateTime.now();
             System.out.printf("Santa ends up on floor %d\n", findFloor(data));
-            System.out.printf("Part one took %d ms\n", ChronoUnit.MILLIS.between(start, LocalDateTime.now()));
+            System.out.printf("Part one took %d ms\n", getMillisSince(start));
 
             start = LocalDateTime.now();
             System.out.printf("Santa ends up in the basement in position %d\n", findBasement(data.toCharArray(), 0, 0, 0));
-            System.out.printf("Part two took %d ms", ChronoUnit.MILLIS.between(start, LocalDateTime.now()));
+            System.out.printf("Part two took %d ms", getMillisSince(start));
         } catch (final Exception exc) {
             exc.printStackTrace();
         }

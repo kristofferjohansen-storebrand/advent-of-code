@@ -3,10 +3,11 @@ package no.krazyglitch.aoc2015.day3;
 import no.krazyglitch.util.FileUtil;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
+
+import static no.krazyglitch.util.DateUtils.getMillisSince;
 
 public class Delivery {
 
@@ -15,11 +16,11 @@ public class Delivery {
             final String data = FileUtil.readInputFile(this.getClass()).getFirst();
             LocalDateTime start = LocalDateTime.now();
             System.out.printf("Santa visited %d unique houses\n", getGiftedHouses(data));
-            System.out.printf("Part one took %d ms\n\n", ChronoUnit.MILLIS.between(start, LocalDateTime.now()));
+            System.out.printf("Part one took %d ms\n\n", getMillisSince(start));
 
             start = LocalDateTime.now();
             System.out.printf("Santa and RoboSanta visited %d unique houses between them\n", getGiftedHousesWithRobot(data));
-            System.out.printf("Part two took %d ms", ChronoUnit.MILLIS.between(start, LocalDateTime.now()));
+            System.out.printf("Part two took %d ms", getMillisSince(start));
         } catch (final Exception exc) {
             exc.printStackTrace();
         }
