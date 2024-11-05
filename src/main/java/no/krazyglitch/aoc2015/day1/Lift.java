@@ -23,7 +23,6 @@ public class Lift {
     }
 
     public static int findFloor(final String input) {
-
         return input.chars().map(parenthesis -> moveFloor((char) parenthesis)).sum();
     }
 
