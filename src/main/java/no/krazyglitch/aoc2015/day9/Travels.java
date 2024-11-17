@@ -1,6 +1,7 @@
 package no.krazyglitch.aoc2015.day9;
 
 import no.krazyglitch.util.FileUtil;
+import no.krazyglitch.util.ListUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class Travels {
         final Map<String, Location> locationMap = new HashMap<>();
         data.forEach(str -> processLine(str, locationMap));
 
-        final List<List<Location>> allPermutations = createPermutations(new ArrayList<>(locationMap.values()));
+        final List<List<Location>> allPermutations = ListUtil.createPermutations(new ArrayList<>(locationMap.values()));
 
         return allPermutations.stream()
                 .mapToInt(Travels::traversePermutation)
@@ -49,7 +50,7 @@ public class Travels {
         final Map<String, Location> locationMap = new HashMap<>();
         data.forEach(str -> processLine(str, locationMap));
 
-        final List<List<Location>> allPermutations = createPermutations(new ArrayList<>(locationMap.values()));
+        final List<List<Location>> allPermutations = ListUtil.createPermutations(new ArrayList<>(locationMap.values()));
 
         return allPermutations.stream()
                 .mapToInt(Travels::traversePermutation)
@@ -64,28 +65,6 @@ public class Travels {
         }
 
         return distance;
-    }
-
-    private static List<List<Location>> createPermutations(final List<Location> locations) {
-        if (locations.isEmpty()) {
-            final List<List<Location>> result = new ArrayList<>();
-            result.add(new ArrayList<>());
-            return result;
-        }
-
-        final List<List<Location>> permutations = new ArrayList<>();
-        final Location firstLocation = locations.removeFirst();
-        final List<List<Location>> recursivePermutations = createPermutations(locations);
-
-        for (final List<Location> innerList : recursivePermutations) {
-            for (int i = 0; i <= innerList.size(); i++) {
-                final List<Location> tempLocations = new ArrayList<>(innerList);
-                tempLocations.add(i, firstLocation);
-                permutations.add(tempLocations);
-            }
-        }
-
-        return permutations;
     }
 
     private static void processLine(final String data, final Map<String, Location> locationMap) {
