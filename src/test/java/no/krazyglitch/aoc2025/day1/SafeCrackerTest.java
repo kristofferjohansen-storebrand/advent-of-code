@@ -32,4 +32,16 @@ class SafeCrackerTest {
         final int result = SafeCracker.getTimesEncounteredZero(new SafeCracker.Safe(50), TEST_DATA);
         assertEquals(6, result);
     }
+
+    @Test
+    void testPartOneStream() {
+        final int result = SafeCracker.getTimesLandedOnZero(TEST_DATA);
+        assertEquals(3, result);
+    }
+
+    @Test
+    void testPartTwoStream() {
+        final int result = SafeCracker.getTimesEncounteredZero(TEST_DATA);
+        assertEquals(6, result);
+    }
 }

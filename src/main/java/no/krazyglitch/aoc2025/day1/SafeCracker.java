@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Gatherers;
+import java.util.stream.Stream;
 
 import static no.krazyglitch.util.DateUtils.getMillisSince;
 
@@ -17,11 +19,11 @@ public class SafeCracker {
         try {
             final List<String> data = FileUtil.readInputFile(this.getClass());
             LocalDateTime start = LocalDateTime.now();
-            System.out.printf("The amount of times zero was encountered is %d%n", getTimesEncountered(new Safe(50), data, 0));
+            System.out.printf("The amount of times zero was encountered is %d%n", getTimesLandedOnZero(data));
             System.out.printf("Part one took %d ms\n\n", getMillisSince(start));
 
             start = LocalDateTime.now();
-            System.out.printf("The amount of times zero was encountered is %d%n", getTimesEncounteredZero(new Safe(50), data));
+            System.out.printf("The amount of times zero was passed is %d%n", getTimesEncounteredZero(data));
             System.out.printf("Part one took %d ms\n\n", getMillisSince(start));
         } catch (final Exception exc) {
             exc.printStackTrace();
@@ -45,6 +47,27 @@ public class SafeCracker {
         return count;
     }
 
+    public static int getTimesLandedOnZero(final List<String> data) {
+        final Safe originalSafe = new Safe(50);
+        return (int) getStreamWithOriginalSafe(data)
+                .filter(safe -> safe.position() % 100 == 0)
+                .count();
+    }
+
+    public static int getTimesEncounteredZero(final List<String> data) {
+        return getStreamWithOriginalSafe(data)
+                .gather(Gatherers.windowSliding(2))
+                .mapToInt(SafeCracker::getTimesPassedZero)
+                .sum();
+    }
+
+    private static Stream<Safe> getStreamWithOriginalSafe(final List<String> data) {
+        final Safe originalSafe = new Safe(50);
+        return Stream.concat(Stream.of(originalSafe), data.stream()
+                .map(SafeCracker::parseInstruction)
+                .gather(Gatherers.scan(() -> originalSafe, Safe::turnDial)));
+    }
+
     public static int getTimesEncounteredZero(final Safe originalSafe, final List<String> data) {
         int count = 0;
         final List<Instruction> instructions = data.stream()
@@ -60,6 +83,20 @@ public class SafeCracker {
         }
 
         return count;
+    }
+
+    private static int getTimesPassedZero(final List<Safe> safes) {
+        return getTimesPassedZero(safes.get(0), safes.get(1));
+    }
+
+    private static int getTimesPassedZero(final Safe start, final Safe end) {
+        final int normalizedStart = start.position() % 100;
+        final int difference = end.position() - start.position();
+        final int clampedStart = normalizedStart < 0 ? (100 + normalizedStart) : normalizedStart;
+        final int relativeEnd = clampedStart + difference;
+
+        final boolean changedSign = clampedStart != 0 && relativeEnd < 1;
+        return changedSign ? Math.abs(relativeEnd) / 100 + 1 : Math.abs(relativeEnd) / 100;
     }
 
     private static int getTimesPassedZero(final int totalPosition, final int lastPosition) {
@@ -94,6 +131,11 @@ public class SafeCracker {
     }
 
     public record Safe(int position) {
+        public Safe turnDial(final Instruction instruction) {
+            final int multiplier = instruction.clockwise() ? 1 : -1;
+            final int newPosition = ((instruction.turns() * multiplier) + this.position());
+            return new Safe(newPosition);
+        }
     }
 
     private record Instruction(boolean clockwise, int turns) {
