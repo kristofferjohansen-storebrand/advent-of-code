@@ -24,4 +24,10 @@ class TheatreTest {
         final long result = Theatre.getLargestRectangle(DATA);
         assertEquals(50, result);
     }
+
+    @Test
+    void testDayNinePartTwo() {
+        final long result = Theatre.getLargestContainedRectangle(DATA);
+        assertEquals(24, result);
+    }
 }

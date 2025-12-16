@@ -12,4 +12,20 @@ public record Vector(Point a, Point b) {
 
         return new Vector(origin, sub);
     }
+
+    public long minX() {
+        return Math.min(a.x(), b.x());
+    }
+
+    public long maxX() {
+        return Math.max(a.x(), b.x());
+    }
+
+    public long minY() {
+        return Math.min(a.y(), b.y());
+    }
+
+    public long maxY() {
+        return Math.max(a.y(), b.y());
+    }
 }
